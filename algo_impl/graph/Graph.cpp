@@ -88,6 +88,7 @@ void Graph::writeToDot() {
 
     if (outputFile.is_open()) {
         outputFile << "graph {\n";
+        outputFile << "  # https://dreampuf.github.io/GraphvizOnline/\n\n";
 
         int edgeCount = 0;
 
