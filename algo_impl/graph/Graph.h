@@ -38,6 +38,9 @@ public:
     /// Helper method to reduce redundant construction.
     void construct(std::string name, int numVertices, int numEdges, int sizeR, std::vector<int> *requiredVertices,
                    std::unordered_map<int, Node *> *nodeMap);
+
+    /// Get Node object by node number.
+    Node *getNode(int nodeNum);
 };
 
 

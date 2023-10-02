@@ -46,7 +46,9 @@ Graph::Graph(const std::string &inputFileName) {
                     break;
                 case 2:
                     for (int i = 0; i < sizeR; ++i) {
-                        requiredVertices->push_back(std::stoi(splitGetFirst(line, " ")));
+                        int required = std::stoi(splitGetFirst(line, " "));
+                        requiredVertices->push_back(required);
+                        nodeMap->find(required)->second->setRequired(true);
                     }
                     lineNum++;
                     break;
@@ -77,29 +79,49 @@ Graph::Graph(const std::string &inputFileName) {
 
 void Graph::writeToDot() {
     std::string outputName = this->name + ".dot";
-    fclose(fopen(outputName.c_str(), "w"));
-    std::ofstream outputFile;
 
+    // Clear file contents.
+    fclose(fopen(outputName.c_str(), "w"));
+
+    std::ofstream outputFile;
     outputFile.open(outputName, std::ios_base::app);
+
     if (outputFile.is_open()) {
         outputFile << "graph {\n";
 
         int edgeCount = 0;
+
+        // Loop through nodes, writing each node and its edges to the DOT file.
         std::unordered_map<int, Node *>::iterator it;
         for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
-            outputFile << "  " << it->second->getNumber() << " [label=\"" << it->second->getNumber() << "\"];\n";
+            Node *node = it->second;
 
-            for (Edge *edge: it->second->getAdjacent()) {
+            outputFile << "  " << node->getNumber() << " [label=\"" << node->getNumber() << "\"";
+            if (node->isRequired()) {
+                outputFile << ", color=\"blue\"";
+            }
+            outputFile << "];\n";
+
+            for (Edge *edge: node->getAdjacent()) {
                 if (edge->getWritten()) {
                     continue;
                 }
-                Node *otherNode = edge->getOtherNode(it->second);
-                outputFile << "  " << it->second->getNumber() << " -- " << otherNode->getNumber() << " [label=\""
-                           << edge->getWeight() << "\"];\n";
+                Node *otherNode = edge->getOtherNode(node);
+                outputFile << "  " << node->getNumber() << " -- " << otherNode->getNumber() << " [label=\""
+                           << edge->getWeight() << "\"";
+                if (edge->isSelected()) {
+                    outputFile << ", color=\"blue\"";
+                }
+                outputFile << "];\n";
+
                 edge->setWritten(true);
                 edgeCount++;
             }
         }
         outputFile << "\n  # Node count: " << this->nodeMap->size() << "\n  # Edge count: " << edgeCount << "\n}";
     }
+}
+
+Node *Graph::getNode(int nodeNum) {
+    return this->nodeMap->find(nodeNum)->second;
 }

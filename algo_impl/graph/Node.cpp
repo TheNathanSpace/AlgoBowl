@@ -19,3 +19,11 @@ int Node::getNumber() const {
 const std::vector<Edge *> &Node::getAdjacent() const {
     return adjacent;
 }
+
+bool Node::isRequired() const {
+    return required;
+}
+
+void Node::setRequired(bool aRequired) {
+    required = aRequired;
+}

@@ -17,12 +17,17 @@ class Node {
 
 private:
     int number;
+    bool required;
     std::vector<Edge *> adjacent;
 
 public:
     explicit Node(int nodeNum);
 
     [[nodiscard]] int getNumber() const;
+
+    [[nodiscard]] bool isRequired() const;
+
+    void setRequired(bool required);
 
     [[nodiscard]] const std::vector<Edge *> &getAdjacent() const;
 

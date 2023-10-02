@@ -18,7 +18,7 @@ private:
     int weight;
     std::pair<Node *, Node *> nodes;
     bool written;
-
+    bool selected;
 
 public:
     Edge(int weight, Node *node1, Node *node2);
@@ -33,6 +33,13 @@ public:
 
     /// Returns the node connected at the opposite end of the given node.
     Node *getOtherNode(Node *startingNode) const;
+
+    /// Get whether or not the edge has been selected in the tree.
+    bool isSelected() const;
+
+    /// Set whether or not the edge has been selected in the tree.
+    void setSelected(bool selected);
+
 };
 
 

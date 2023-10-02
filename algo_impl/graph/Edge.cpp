@@ -28,3 +28,11 @@ bool Edge::getWritten() const {
 void Edge::setWritten(bool written) {
     Edge::written = written;
 }
+
+bool Edge::isSelected() const {
+    return selected;
+}
+
+void Edge::setSelected(bool selected) {
+    Edge::selected = selected;
+}
