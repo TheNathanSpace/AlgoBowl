@@ -12,8 +12,6 @@ int main() {
     std::cout << "Constructing graph..." << std::endl;
     auto *graph = new Graph(inputFileName);
 
-    graph->getNode(2)->getAdjacent().at(0)->setSelected(true);
-
     // Output the graph as a DOT file for visualization.
     graph->writeToDot();
     std::cout << "Wrote graph to .dot file" << std::endl;
