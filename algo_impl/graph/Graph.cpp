@@ -23,36 +23,6 @@ void Graph::construct(std::string name, int numVertices, int numEdges, int sizeR
     this->nodeMap = nodeMap;
 }
 
-
-void Graph::writeToDot() {
-    std::string outputName = this->name + ".dot";
-    fclose(fopen(outputName.c_str(), "w"));
-    std::ofstream outputFile;
-
-    outputFile.open(outputName, std::ios_base::app);
-    if (outputFile.is_open()) {
-        outputFile << "graph {\n";
-
-        int edgeCount = 0;
-        std::unordered_map<int, Node *>::iterator it;
-        for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
-            outputFile << "  " << it->second->getNumber() << " [label=\"" << it->second->getNumber() << "\"];\n";
-
-            for (Edge *edge: it->second->getAdjacent()) {
-                if (edge->getWritten()) {
-                    continue;
-                }
-                Node *otherNode = edge->getOtherNode(it->second);
-                outputFile << "  " << it->second->getNumber() << " -- " << otherNode->getNumber() << " [label=\""
-                           << edge->getWeight() << "\"];\n";
-                edge->setWritten(true);
-                edgeCount++;
-            }
-        }
-        outputFile << "\n  # Node count: " << this->nodeMap->size() << "\n  # Edge count: " << edgeCount << "\n}";
-    }
-}
-
 Graph::Graph(const std::string &inputFileName) {
     std::string line;
     std::ifstream inputFile(inputFileName);
@@ -102,5 +72,34 @@ Graph::Graph(const std::string &inputFileName) {
     } else {
         std::cerr << "Unable to open file " << inputFileName << std::endl;
         exit(-1);
+    }
+}
+
+void Graph::writeToDot() {
+    std::string outputName = this->name + ".dot";
+    fclose(fopen(outputName.c_str(), "w"));
+    std::ofstream outputFile;
+
+    outputFile.open(outputName, std::ios_base::app);
+    if (outputFile.is_open()) {
+        outputFile << "graph {\n";
+
+        int edgeCount = 0;
+        std::unordered_map<int, Node *>::iterator it;
+        for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
+            outputFile << "  " << it->second->getNumber() << " [label=\"" << it->second->getNumber() << "\"];\n";
+
+            for (Edge *edge: it->second->getAdjacent()) {
+                if (edge->getWritten()) {
+                    continue;
+                }
+                Node *otherNode = edge->getOtherNode(it->second);
+                outputFile << "  " << it->second->getNumber() << " -- " << otherNode->getNumber() << " [label=\""
+                           << edge->getWeight() << "\"];\n";
+                edge->setWritten(true);
+                edgeCount++;
+            }
+        }
+        outputFile << "\n  # Node count: " << this->nodeMap->size() << "\n  # Edge count: " << edgeCount << "\n}";
     }
 }

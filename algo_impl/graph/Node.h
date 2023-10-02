@@ -9,8 +9,10 @@
 #include <vector>
 #include "Edge.h"
 
+// Forward declaration because of circular dependency
 class Edge;
 
+/// Object representing node.
 class Node {
 
 private:
@@ -20,9 +22,9 @@ private:
 public:
     explicit Node(int nodeNum);
 
-    int getNumber() const;
+    [[nodiscard]] int getNumber() const;
 
-    const std::vector<Edge *> &getAdjacent() const;
+    [[nodiscard]] const std::vector<Edge *> &getAdjacent() const;
 
     void addAdjacent(Edge *adjacentEdge);
 };

@@ -8,25 +8,30 @@
 
 #include "Node.h"
 
+// Forward declaration because of circular dependency
 class Node;
 
+/// Object representing a weighted edge connecting two nodes.
 class Edge {
 
 private:
     int weight;
-    std::pair<Node*, Node*> nodes;
+    std::pair<Node *, Node *> nodes;
     bool written;
 
 
 public:
     Edge(int weight, Node *node1, Node *node2);
 
-    bool getWritten() const;
+    [[nodiscard]] int getWeight() const;
 
-    int getWeight() const;
+    [[nodiscard]] bool getWritten() const;
 
+    /// Mark this edge as already written to the output
+    /// DOT file (avoid duplicate edges).
     void setWritten(bool written);
 
+    /// Returns the node connected at the opposite end of the given node.
     Node *getOtherNode(Node *startingNode) const;
 };
 
