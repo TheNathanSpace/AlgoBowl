@@ -1,12 +1,14 @@
 # AlgoBowl
 
 Group members:
-- Davita Bird
-- Josh Hilgartner
-- Kai Hoshijo
-- Nathan Panzer
+- Davita Bird (Verification)
+- Josh Hilgartner (Input)
+- Kai Hoshijo (Algorithm Implementation)
+- Nathan Panzer (Algorithm Implementation)
 
 ## Usage
+
+### Algorithm Implementation
 
 Frankly I'm not an expert in getting C++ code to run on different systems. But you should be able to run it in CLion like this:
 
