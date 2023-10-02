@@ -26,7 +26,12 @@ public:
     Graph(std::string name, int numVertices, int numEdges, int sizeR, std::vector<int> *requiredVertices,
           std::unordered_map<int, Node *> *nodeMap);
 
+    explicit Graph(const std::string &inputFileName);
+
     void writeToDot();
+
+    void construct(std::string name, int numVertices, int numEdges, int sizeR, std::vector<int> *requiredVertices,
+                   std::unordered_map<int, Node *> *nodeMap);
 };
 
 
