@@ -33,7 +33,7 @@ public:
 
     /// Outputs the Graph to a .DOT file, to be used in graph
     /// visualization software like https://dreampuf.github.io/GraphvizOnline/
-    void writeToDot();
+    void writeToDot(const std::string &outputFileName);
 
     /// Helper method to reduce redundant construction.
     void construct(std::string name, int numVertices, int numEdges, int sizeR, std::vector<int> *requiredVertices,
@@ -41,6 +41,9 @@ public:
 
     /// Get Node object by node number.
     Node *getNode(int nodeNum);
+
+    /// Resets chosen/written edges so you can run more algorithms.
+    void reset();
 };
 
 

@@ -77,8 +77,8 @@ Graph::Graph(const std::string &inputFileName) {
     }
 }
 
-void Graph::writeToDot() {
-    std::string outputName = this->name + ".dot";
+void Graph::writeToDot(const std::string &outputFileName) {
+    std::string outputName = outputFileName + ".dot";
 
     // Clear file contents.
     fclose(fopen(outputName.c_str(), "w"));
@@ -125,4 +125,15 @@ void Graph::writeToDot() {
 
 Node *Graph::getNode(int nodeNum) {
     return this->nodeMap->find(nodeNum)->second;
+}
+
+void Graph::reset() {
+    std::unordered_map<int, Node *>::iterator it;
+    for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
+        Node *node = it->second;
+        for (Edge *edge: node->getAdjacent()) {
+            edge->setSelected(false);
+            edge->setWritten(false);
+        }
+    }
 }
