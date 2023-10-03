@@ -21,6 +21,7 @@ void Graph::construct(std::string name, int numVertices, int numEdges, int sizeR
     this->sizeR = sizeR;
     this->requiredVertices = requiredVertices;
     this->nodeMap = nodeMap;
+
 }
 
 Graph::Graph(const std::string &inputFileName) {
@@ -29,6 +30,7 @@ Graph::Graph(const std::string &inputFileName) {
     if (inputFile.is_open()) {
         this->requiredVertices = new std::vector<int>;
         this->nodeMap = new std::unordered_map<int, Node *>;
+        this->edges = new std::vector<Edge *>;
 
         int lineNum = 1;
         while (getline(inputFile, line)) {
@@ -60,6 +62,7 @@ Graph::Graph(const std::string &inputFileName) {
                     int weight = std::stoi(splitGetFirst(line, " "));
 
                     Edge *edge = new Edge(weight, node1Ptr, node2Ptr);
+                    this->edges->push_back(edge);
 
                     node1Ptr->addAdjacent(edge);
                     node2Ptr->addAdjacent(edge);
@@ -88,9 +91,9 @@ void Graph::writeToDot(const std::string &outputFileName) {
 
     if (outputFile.is_open()) {
         outputFile << "graph {\n";
-        outputFile << "  # https://dreampuf.github.io/GraphvizOnline/\n\n";
-
-        int edgeCount = 0;
+        outputFile << "  # https://dreampuf.github.io/GraphvizOnline/\n";
+        outputFile << "  # Node count: " << this->nodeMap->size() << "\n  # Edge count: " << this->edges->size()
+                   << "\n\n";
 
         // Loop through nodes, writing each node and its edges to the DOT file.
         std::unordered_map<int, Node *>::iterator it;
@@ -102,24 +105,17 @@ void Graph::writeToDot(const std::string &outputFileName) {
                 outputFile << ", color=\"blue\"";
             }
             outputFile << "];\n";
-
-            for (Edge *edge: node->getAdjacent()) {
-                if (edge->getWritten()) {
-                    continue;
-                }
-                Node *otherNode = edge->getOtherNode(node);
-                outputFile << "  " << node->getNumber() << " -- " << otherNode->getNumber() << " [label=\""
-                           << edge->getWeight() << "\"";
-                if (edge->isSelected()) {
-                    outputFile << ", color=\"blue\"";
-                }
-                outputFile << "];\n";
-
-                edge->setWritten(true);
-                edgeCount++;
-            }
         }
-        outputFile << "\n  # Node count: " << this->nodeMap->size() << "\n  # Edge count: " << edgeCount << "\n}";
+        for (Edge *edge: *this->edges) {
+            auto nodes = edge->getNodes();
+            outputFile << "  " << nodes.first->getNumber() << " -- " << nodes.second->getNumber() << " [label=\""
+                       << edge->getWeight() << "\"";
+            if (edge->isSelected()) {
+                outputFile << ", color=\"blue\"";
+            }
+            outputFile << "];\n";
+        }
+        outputFile << "}";
     }
 }
 
@@ -128,12 +124,7 @@ Node *Graph::getNode(int nodeNum) {
 }
 
 void Graph::reset() {
-    std::unordered_map<int, Node *>::iterator it;
-    for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
-        Node *node = it->second;
-        for (Edge *edge: node->getAdjacent()) {
-            edge->setSelected(false);
-            edge->setWritten(false);
-        }
+    for (Edge *edge: *this->edges) {
+        edge->setSelected(false);
     }
 }

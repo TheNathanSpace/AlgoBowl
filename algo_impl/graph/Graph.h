@@ -23,6 +23,12 @@ private:
     std::vector<int> *requiredVertices;
     std::unordered_map<int, Node *> *nodeMap;
 
+    /*
+     * This could be changed to a map (node1, node2) -> edge, but I'm not
+     * sure that's necessary so haven't done it yet.
+     */
+    std::vector<Edge *> *edges;
+
 public:
     Graph(std::string name, int numVertices, int numEdges, int sizeR, std::vector<int> *requiredVertices,
           std::unordered_map<int, Node *> *nodeMap);

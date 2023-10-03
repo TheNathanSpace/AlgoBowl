@@ -21,18 +21,14 @@ int Edge::getWeight() const {
     return weight;
 }
 
-bool Edge::getWritten() const {
-    return written;
-}
-
-void Edge::setWritten(bool written) {
-    Edge::written = written;
-}
-
 bool Edge::isSelected() const {
     return selected;
 }
 
 void Edge::setSelected(bool selected) {
     Edge::selected = selected;
+}
+
+std::pair<Node *, Node *> Edge::getNodes() {
+    return this->nodes;
 }

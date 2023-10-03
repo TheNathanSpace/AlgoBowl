@@ -10,9 +10,9 @@ int main() {
 
     // Construct the graph object.
     std::cout << "Constructing graph..." << std::endl;
-    auto *graph = new Graph(inputFileName);
+    auto graph = Graph(inputFileName);
     // Output the graph as a DOT file for visualization.
-    graph->writeToDot(inputFileName + "_base");
+    graph.writeToDot(inputFileName + "_base");
 
     /* This is where you'd run the algorithm.
      * You can save the output separately for each one. */

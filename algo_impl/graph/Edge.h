@@ -17,19 +17,12 @@ class Edge {
 private:
     int weight;
     std::pair<Node *, Node *> nodes;
-    bool written;
     bool selected;
 
 public:
     Edge(int weight, Node *node1, Node *node2);
 
     [[nodiscard]] int getWeight() const;
-
-    [[nodiscard]] bool getWritten() const;
-
-    /// Mark this edge as already written to the output
-    /// DOT file (avoid duplicate edges).
-    void setWritten(bool written);
 
     /// Returns the node connected at the opposite end of the given node.
     Node *getOtherNode(Node *startingNode) const;
@@ -40,6 +33,7 @@ public:
     /// Set whether or not the edge has been selected in the tree.
     void setSelected(bool selected);
 
+    std::pair<Node *, Node *> getNodes();
 };
 
 
