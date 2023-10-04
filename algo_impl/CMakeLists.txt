@@ -11,4 +11,8 @@ add_executable(AlgoBowl main.cpp
         graph/Node.cpp
         graph/Node.h
         graph/Edge.cpp
-        graph/Edge.h)
+        graph/Edge.h
+        algorithms/MST.cpp
+        algorithms/MST.h
+        algorithms/Algorithm.cpp
+        algorithms/Algorithm.h)

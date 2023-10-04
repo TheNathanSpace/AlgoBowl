@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "graph/Graph.h"
+#include "algorithms/MST.h"
 
 int main() {
     // Get graph file name from the user.
@@ -14,16 +15,19 @@ int main() {
     // Output the graph as a DOT file for visualization.
     graph.writeToDot(inputFileName + "_base");
 
-    /* This is where you'd run the algorithm.
-     * You can save the output separately for each one. */
-//    graph->mst();
-//    graph->writeToDot(inputFileName + "_mst");
-
-    /* Reset the graph to run the next algorithm. */
-//    graph->reset();
-
-//    graph.dijkstra();
-//    graph->writeToDot(inputFileName + "_dijkstra");
+    /*
+     * This is how you run algorithms:
+     *   1. Create the Algorithm object, passing in the Graph.
+     *   2. Run the Algorithm.
+     *   3. (Optional) Write the Graph visualization to a DOT file.
+     *   4. Write the AlgoBowl Graph output to a TXT file.
+     *   5. Reset the Graph (so you can run the next algorithm).
+     */
+    MST mst = MST(&graph);
+    mst.run();
+    mst.writeToDot();
+    mst.writeAlgoBowlOutput();
+    mst.reset();
 
     std::cout << "Finished all algorithms/output. Exiting." << std::endl;
 
