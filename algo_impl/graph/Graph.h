@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <set>
 #include "Node.h"
 
 /// Object representing an undirected, weighted graph.
@@ -33,7 +34,7 @@ private:
      */
     std::vector<Edge *> edges;
 
-    std::vector<Edge *> selectedEdges;
+    std::set<Edge *> selectedEdges;
     int selectedWeight = 0;
 
 public:
@@ -60,7 +61,7 @@ public:
     /// Select an Edge, updating Graph data structures.
     void selectEdge(Edge *edge) {
         edge->setSelected(true);
-        this->selectedEdges.push_back(edge);
+        this->selectedEdges.insert(edge);
         this->selectedWeight += edge->getWeight();
     }
 
