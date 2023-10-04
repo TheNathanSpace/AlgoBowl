@@ -128,3 +128,16 @@ void Graph::reset() {
         edge->setSelected(false);
     }
 }
+
+Graph::~Graph() {
+    for (Edge *edge: *this->edges) {
+        delete edge;
+    }
+    delete edges;
+    std::unordered_map<int, Node *>::iterator it;
+    for (it = this->nodeMap->begin(); it != this->nodeMap->end(); it++) {
+        delete it->second;
+    }
+    delete this->nodeMap;
+    delete this->requiredVertices;
+}

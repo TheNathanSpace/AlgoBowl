@@ -50,6 +50,8 @@ public:
 
     /// Resets chosen/written edges so you can run more algorithms.
     void reset();
+
+    virtual ~Graph();
 };
 
 
