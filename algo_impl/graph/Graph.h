@@ -22,10 +22,10 @@ public:
 
 private:
 
-    int numVertices;
+    int numNodes;
     int numEdges;
     int sizeR;
-    std::vector<int> requiredVertices;
+    std::vector<int> requiredNodes;
     std::unordered_map<int, Node *> nodeMap;
 
     /*

@@ -10,7 +10,7 @@
 
 void Graph::construct(std::string name, int numVertices, int numEdges, int sizeR) {
     this->name = std::move(name);
-    this->numVertices = numVertices;
+    this->numNodes = numVertices;
     this->numEdges = numEdges;
     this->sizeR = sizeR;
 }
@@ -23,8 +23,8 @@ Graph::Graph(const std::string &inputFileName) {
         while (getline(inputFile, line)) {
             switch (lineNum) {
                 case 1:
-                    numVertices = std::stoi(splitGetFirst(line, " "));
-                    for (int i = 0; i < numVertices; ++i) {
+                    numNodes = std::stoi(splitGetFirst(line, " "));
+                    for (int i = 0; i < numNodes; ++i) {
                         Node *node = new Node(i + 1);
                         nodeMap.insert(std::pair(i + 1, node));
                     }
@@ -36,7 +36,7 @@ Graph::Graph(const std::string &inputFileName) {
                 case 2:
                     for (int i = 0; i < sizeR; ++i) {
                         int required = std::stoi(splitGetFirst(line, " "));
-                        requiredVertices.push_back(required);
+                        requiredNodes.push_back(required);
                         nodeMap.find(required)->second->setRequired(true);
                     }
                     lineNum++;
@@ -60,7 +60,7 @@ Graph::Graph(const std::string &inputFileName) {
         }
         inputFile.close();
 
-        construct(inputFileName, numVertices, numEdges, sizeR);
+        construct(inputFileName, numNodes, numEdges, sizeR);
     } else {
         std::cerr << "Unable to open file " << inputFileName << std::endl;
         exit(-1);
@@ -78,9 +78,11 @@ void Graph::writeToDot(const std::string &outputFileName) {
 
     if (outputFile.is_open()) {
         outputFile << "graph {\n";
-        outputFile << "  # https://dreampuf.github.io/GraphvizOnline/\n";
+        outputFile << "  # https://dreampuf.github.io/GraphvizOnline/\n\n";
         outputFile << "  # Node count: " << this->nodeMap.size() << "\n  # Edge count: " << this->edges.size()
                    << "\n\n";
+        outputFile << "  # Required node count: " << this->requiredNodes.size() << "\n  # Selected edge count: "
+                   << this->selectedEdges.size() << "\n  # Selected edge weight: " << this->selectedWeight << "\n\n";
 
         // Loop through nodes, writing each node and its edges to the DOT file.
         std::unordered_map<int, Node *>::iterator it;
