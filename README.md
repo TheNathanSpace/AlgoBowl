@@ -22,7 +22,7 @@ You'll be prompted for a graph input file, which should be placed in the `algo_i
 
 ### Algorithm Implementation
 
-Right now, `algo_impl` can read in a graph file, construct the `Graph` object, and output it to a `.DOT` file for visualization. It's ready for the actual algorithms:
+Right now, `algo_impl` can read in a graph file, construct the `Graph` object, output it to a `.DOT` file for visualization, and output it to the AlgoBowl output format. It's ready for the actual algorithms:
 
 - Normal MST
 - MST, but deleting unnecessary leaves
