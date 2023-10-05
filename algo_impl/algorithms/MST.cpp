@@ -5,16 +5,16 @@
 #include "MST.h"
 
 void MST::run() {
-
+    // TODO: Implement MST here, choosing selected Edges on the Graph.
 }
 
-MST::MST(Graph *graph) : Algorithm(graph) {
+MST::MST(Graph *graph) : Algorithm("mst", graph) {
 }
 
 void MST::writeToDot() {
-    Algorithm::writeToDot("mst");
+    Algorithm::writeToDot(this->getName());
 }
 
 void MST::writeAlgoBowlOutput() {
-    Algorithm::writeAlgoBowlOutput("mst");
+    Algorithm::writeAlgoBowlOutput(this->getName());
 }

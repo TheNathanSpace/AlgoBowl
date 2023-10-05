@@ -4,8 +4,11 @@
 
 #include "Algorithm.h"
 
-Algorithm::Algorithm(Graph *graph) {
+#include <utility>
+
+Algorithm::Algorithm(std::string name, Graph *graph) {
     this->graph = graph;
+    this->name = std::move(name);
 }
 
 Graph *Algorithm::getGraph() const {
@@ -23,4 +26,8 @@ void Algorithm::writeToDot(const std::string &algorithm) {
 void Algorithm::writeAlgoBowlOutput(const std::string &algorithm) {
     this->graph->writeAlgoBowlOutput(this->getGraph()->getName() + "_" + algorithm);
 
+}
+
+const std::string &Algorithm::getName() const {
+    return name;
 }

@@ -11,11 +11,14 @@
 class Algorithm {
 private:
     Graph *graph;
+    std::string name;
 
 public:
-    explicit Algorithm(Graph *graph);
+    explicit Algorithm(std::string name, Graph *graph);
 
     [[nodiscard]] Graph *getGraph() const;
+
+    [[nodiscard]] const std::string &getName() const;
 
     virtual void run() = 0;
 
@@ -24,6 +27,7 @@ public:
     void writeAlgoBowlOutput(const std::string &algorithm);
 
     void reset();
+
 };
 
 
