@@ -5,8 +5,12 @@
 #include <fstream>
 #include <utility>
 #include <iostream>
+#include <filesystem>
 #include "Graph.h"
 #include "../util/util.h"
+
+const std::string OUTPUT_DIR_NAME = "./outputs";
+const std::string INPUT_DIR_NAME = "./inputs";
 
 void Graph::construct(std::string name, int numVertices, int numEdges, int sizeR) {
     this->name = std::move(name);
@@ -16,8 +20,10 @@ void Graph::construct(std::string name, int numVertices, int numEdges, int sizeR
 }
 
 Graph::Graph(const std::string &inputFileName) {
+    std::string inputFilePath = INPUT_DIR_NAME + "/" + inputFileName;
+
     std::string line;
-    std::ifstream inputFile(inputFileName);
+    std::ifstream inputFile(inputFilePath);
     if (inputFile.is_open()) {
         int lineNum = 1;
         while (getline(inputFile, line)) {
@@ -68,7 +74,10 @@ Graph::Graph(const std::string &inputFileName) {
 }
 
 void Graph::writeToDot(const std::string &outputFileName) {
-    std::string outputName = outputFileName + ".dot";
+    std::string outputDir = OUTPUT_DIR_NAME + "/" + this->name;
+    std::string outputName = outputDir + "/" + outputFileName + ".dot";
+
+    std::filesystem::create_directories(outputDir);
 
     // Clear file contents.
     fclose(fopen(outputName.c_str(), "w"));
@@ -138,7 +147,10 @@ const std::string &Graph::getName() const {
 }
 
 void Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
-    std::string outputName = outputFileName + "_output.txt";
+    std::string outputDir = OUTPUT_DIR_NAME + "/" + this->name;
+    std::string outputName = outputDir + "/" + outputFileName + ".txt";
+
+    std::filesystem::create_directories(outputDir);
 
     // Clear file contents.
     fclose(fopen(outputName.c_str(), "w"));

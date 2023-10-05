@@ -1,6 +1,7 @@
 # AlgoBowl
 
 Group members:
+
 - Davita Bird (Verification)
 - Josh Hilgartner (Input)
 - Kai Hoshijo (Algorithm Implementation)
@@ -10,19 +11,24 @@ Group members:
 
 ### Algorithm Implementation
 
-Frankly I'm not an expert in getting C++ code to run on different systems. But you should be able to run it in CLion like this:
+Frankly I'm not an expert in getting C++ code to run on different systems. But you should be able to run it in CLion
+like this:
 
-1. Open `algo_impl` as a project in CLion.
-2. Edit the run configurations to set the working directory to the `algo_impl` directory (e.g. `/home/nathan/CLionProjects/AlgoBowl/algo_impl`).
-3. Run the project.
+1. Open `AlgoBowl` as a project in CLion.
+2. When prompted by CLion, select `algo_impl/CMakeLists.txt` as your CMakeLists file.
+3. Edit the run configurations to set the working directory to the `AlgoBowl` directory (
+   e.g. `/home/nathan/CLionProjects/AlgoBowl`).
+4. Run the project.
 
-You'll be prompted for a graph input file, which should be placed in the `algo_impl` directory. Output files will be in the same directory (probably will be changed).
+You'll be prompted for a graph input file, which should be placed in the `AlgoBowl/inputs` directory. Output files will
+be in the `AlgoBowl/outputs` directory.
 
 ## TODO:
 
 ### Algorithm Implementation
 
-Right now, `algo_impl` can read in a graph file, construct the `Graph` object, output it to a `.DOT` file for visualization, and output it to the AlgoBowl output format. It's ready for the actual algorithms:
+Right now, `algo_impl` can read in a graph file, construct the `Graph` object, output it to a `.DOT` file for
+visualization, and output it to the AlgoBowl output format. It's ready for the actual algorithms:
 
 - Normal MST
 - MST, but deleting unnecessary leaves
