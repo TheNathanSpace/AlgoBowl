@@ -7,6 +7,7 @@
 
 
 #include "Algorithm.h"
+#include <cstdlib>
 
 class MST : public Algorithm {
 

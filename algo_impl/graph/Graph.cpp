@@ -120,6 +120,10 @@ void Graph::writeToDot(const std::string &outputFileName) {
     outputFile.close();
 }
 
+int Graph::getNumNodes() {
+    return this->numNodes;
+}
+
 Node *Graph::getNode(int nodeNum) {
     return this->nodeMap.find(nodeNum)->second;
 }
