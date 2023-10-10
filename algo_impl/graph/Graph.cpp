@@ -60,6 +60,9 @@ Graph::Graph(const std::string &inputFileName) {
                     node1Ptr->addAdjacent(edge);
                     node2Ptr->addAdjacent(edge);
 
+                    node1Ptr->updateSumWeight(weight);
+                    node2Ptr->updateSumWeight(wieght);
+
                     lineNum++;
                     break;
             }

@@ -17,6 +17,7 @@ class Node {
 
 private:
     int number = -1;
+    int sumWeight = 0;
     bool required = false;
     bool visited = false;
     std::vector<Edge *> adjacent;
@@ -33,6 +34,10 @@ public:
     void setRequired(bool required);
 
     void setVisited(bool visited);
+
+    void updateSumWeight(int update);
+
+    int getSumWeight();
 
     [[nodiscard]] const std::vector<Edge *> &getAdjacent() const;
 

@@ -41,8 +41,15 @@ void MST::run() {
      * Prim's algorithm *
      ********************/
 
-    // Get first required node -> change to node with cheapest edges
-    int firstNodeNum = getGraph()->getRequiredNodes().at(0);
+    // Get first required node with the shortest edge weights
+    int minSumWeight = 10000 * 50 + 1; // Only 10000 edges are allowed at max 50
+    int firstNodeNum = -1;
+    for (Node *node : getGraph()->getRequiredNodes()) {
+        if (node->getSumWeight() <= minSumWeight) {
+            minSumWeight = node->getSumWeight();
+            firstNodeNum = node->getNumber();
+        }
+    }
 
     // Mark first node as visited
     getGraph()->visitNode(getGraph()->getNode(firstNodeNum));
