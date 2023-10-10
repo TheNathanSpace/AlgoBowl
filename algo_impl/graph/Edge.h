@@ -15,9 +15,9 @@ class Node;
 class Edge {
 
 private:
-    int weight;
+    int weight = 0;
     std::pair<Node *, Node *> nodes;
-    bool selected;
+    bool selected = false;
 
 public:
     Edge(int weight, Node *node1, Node *node2);

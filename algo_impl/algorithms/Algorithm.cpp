@@ -23,9 +23,8 @@ void Algorithm::writeToDot(const std::string &algorithm) {
     this->graph->writeToDot(this->getGraph()->getName() + "_" + algorithm);
 }
 
-void Algorithm::writeAlgoBowlOutput(const std::string &algorithm) {
-    this->graph->writeAlgoBowlOutput(this->getGraph()->getName() + "_" + algorithm);
-
+std::string Algorithm::writeAlgoBowlOutput(const std::string &algorithm) {
+    return this->graph->writeAlgoBowlOutput(this->getGraph()->getName() + "_" + algorithm);
 }
 
 const std::string &Algorithm::getName() const {

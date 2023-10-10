@@ -24,7 +24,7 @@ public:
 
     void writeToDot(const std::string &algorithm);
 
-    void writeAlgoBowlOutput(const std::string &algorithm);
+    std::string writeAlgoBowlOutput(const std::string &algorithm);
 
     void reset();
 

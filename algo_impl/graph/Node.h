@@ -16,9 +16,9 @@ class Edge;
 class Node {
 
 private:
-    int number;
-    bool required;
-    bool visited;
+    int number = -1;
+    bool required = false;
+    bool visited = false;
     std::vector<Edge *> adjacent;
 
 public:

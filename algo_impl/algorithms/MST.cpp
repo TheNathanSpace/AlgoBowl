@@ -37,22 +37,17 @@ std::tuple<Node *, Edge *> MST::getCheapestEdge() {
 }
 
 void MST::run() {
-    // Setting up the random number generator
-    srand((unsigned) time(nullptr));
-    int random = rand();
-
     /********************
      * Prim's algorithm *
      ********************/
 
-    // Choosing a random node -> change to node with cheapest edges
-    int firstNodeNum = random % getGraph()->getNumNodes();
+    // Get first required node -> change to node with cheapest edges
+    int firstNodeNum = getGraph()->getRequiredNodes().at(0);
 
-    // Since we're already storing a hashmap of Nodes in Graph, we use that
-    // to check if it has been visited.
+    // Mark first node as visited
     getGraph()->visitNode(getGraph()->getNode(firstNodeNum));
 
-    // repeat until all nodes are in the formula
+    // Repeat until all nodes are in the tree
     auto visitedNodes = getGraph()->getVisitedNodes();
     while (visitedNodes.size() != getGraph()->getNumNodes()) {
         auto [newNode, cheapestEdge] = getCheapestEdge();
@@ -75,6 +70,6 @@ void MST::writeToDot() {
     Algorithm::writeToDot(this->getName());
 }
 
-void MST::writeAlgoBowlOutput() {
-    Algorithm::writeAlgoBowlOutput(this->getName());
+std::string MST::writeAlgoBowlOutput() {
+    return Algorithm::writeAlgoBowlOutput(this->getName());
 }

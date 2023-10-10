@@ -154,7 +154,7 @@ const std::string &Graph::getName() const {
     return name;
 }
 
-void Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
+std::string Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
     std::string outputDir = OUTPUT_DIR_NAME + "/" + this->name;
     std::string outputName = outputDir + "/" + outputFileName + ".txt";
 
@@ -178,6 +178,7 @@ void Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
         std::cerr << "Unable to write to file " << outputName << std::endl;
     }
     outputFile.close();
+    return outputName;
 }
 
 const std::set<Node *> &Graph::getVisitedNodes() const {
@@ -197,4 +198,8 @@ void Graph::selectEdge(Edge *edge) {
 void Graph::visitNode(Node *node) {
     node->setVisited(true);
     this->visitedNodes.insert(node);
+}
+
+const std::vector<int> &Graph::getRequiredNodes() const {
+    return requiredNodes;
 }

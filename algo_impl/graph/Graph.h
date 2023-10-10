@@ -22,10 +22,14 @@ public:
 
 private:
 
-    int numNodes;
-    int numEdges;
-    int sizeR;
+    int numNodes = 0;
+    int numEdges = 0;
+    int sizeR = 0;
     std::vector<int> requiredNodes;
+public:
+    const std::vector<int> &getRequiredNodes() const;
+
+private:
     std::unordered_map<int, Node *> nodeMap;
 
     /*
@@ -61,7 +65,7 @@ public:
     void writeToDot(const std::string &outputFileName);
 
     /// Write the Graph to a TXT file in the proper AlgoBowl output format.
-    void writeAlgoBowlOutput(const std::string &outputFileName);
+    std::string writeAlgoBowlOutput(const std::string &outputFileName);
 
     /// Get Node object by node number.
     Node *getNode(int nodeNum);
