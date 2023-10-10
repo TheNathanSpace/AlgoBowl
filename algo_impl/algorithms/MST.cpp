@@ -42,12 +42,13 @@ void MST::run() {
      ********************/
 
     // Get first required node with the shortest edge weights
-    int minSumWeight = 10000 * 50 + 1; // Only 10000 edges are allowed at max 50
-    int firstNodeNum = -1;
-    for (Node *node : getGraph()->getRequiredNodes()) {
+    int minSumWeight = 10000 * 50 + 1; // Only 10000 edges are allowed at max weight 50
+    int firstNodeNum = 3;
+    for (int nodeNum : getGraph()->getRequiredNodes()) {
+        Node *node = getGraph()->getNode(nodeNum);
         if (node->getSumWeight() <= minSumWeight) {
             minSumWeight = node->getSumWeight();
-            firstNodeNum = node->getNumber();
+            firstNodeNum = nodeNum;
         }
     }
 

@@ -35,3 +35,11 @@ bool Node::isVisited() const {
 void Node::setVisited(bool visited) {
     this->visited = visited;
 }
+
+void Node::updateSumWeight(int update) {
+    this->sumWeight += update;
+}
+
+int Node::getSumWeight() {
+    return this->sumWeight;
+}
