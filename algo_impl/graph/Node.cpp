@@ -27,3 +27,11 @@ bool Node::isRequired() const {
 void Node::setRequired(bool aRequired) {
     required = aRequired;
 }
+
+bool Node::isVisited() const {
+    return visited;
+}
+
+void Node::setVisited(bool visited) {
+    this->visited = visited;
+}

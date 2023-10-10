@@ -10,7 +10,7 @@ int main() {
     std::cin >> inputFileName;
 
     // Construct the graph object.
-    std::cout << "Constructing graph..." << std::endl;
+    std::cout << "Constructing graph...\n" << std::endl;
     auto graph = Graph(inputFileName);
 
     // Output the graph as a DOT file for visualization.
@@ -25,13 +25,15 @@ int main() {
      *   5. Reset the Graph (so you can run the next algorithm).
      */
     MST mst = MST(&graph);
+    std::cout << "Starting MST..." << std::endl;
     mst.run();
+    std::cout << "MST finished!" << std::endl;
     mst.writeToDot();
     mst.writeAlgoBowlOutput();
     mst.reset();
 
     // all done :)
-    std::cout << "Finished all algorithms/output. Exiting." << std::endl;
+    std::cout << "\nFinished all algorithms/output. Exiting." << std::endl;
 
     return 0;
 }

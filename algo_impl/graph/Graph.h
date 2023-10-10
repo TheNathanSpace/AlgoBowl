@@ -35,7 +35,15 @@ private:
     std::vector<Edge *> edges;
 
     std::set<Edge *> selectedEdges;
+public:
+    const std::set<Edge *> &getSelectedEdges() const;
+
+private:
     int selectedWeight = 0;
+
+    std::set<Node *> visitedNodes;
+public:
+    const std::set<Node *> &getVisitedNodes() const;
 
 public:
     /// Construct Graph by reading in a text file.
@@ -59,15 +67,16 @@ public:
     Node *getNode(int nodeNum);
 
     /// Select an Edge, updating Graph data structures.
-    void selectEdge(Edge *edge) {
-        edge->setSelected(true);
-        this->selectedEdges.insert(edge);
-        this->selectedWeight += edge->getWeight();
-    }
+    void selectEdge(Edge *edge);
+
+    /// Visit a Node, updating Graph data structures.
+    void visitNode(Node *node);
 
     /// Resets chosen/written edges so you can run more algorithms.
     void reset();
 
+    // Get number of nodes
+    int getNumNodes() const;
 };
 
 

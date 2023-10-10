@@ -120,6 +120,10 @@ void Graph::writeToDot(const std::string &outputFileName) {
     outputFile.close();
 }
 
+int Graph::getNumNodes() const {
+    return this->numNodes;
+}
+
 Node *Graph::getNode(int nodeNum) {
     return this->nodeMap.find(nodeNum)->second;
 }
@@ -130,6 +134,10 @@ void Graph::reset() {
     }
     this->selectedEdges.clear();
     this->selectedWeight = 0;
+    std::unordered_map<int, Node *>::iterator it;
+    for (it = this->nodeMap.begin(); it != this->nodeMap.end(); it++) {
+        it->second->setVisited(false);
+    }
 }
 
 Graph::~Graph() {
@@ -164,10 +172,29 @@ void Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
         outputFile << selectedNum << "\n";
 
         for (Edge *edge: this->selectedEdges) {
-            outputFile << edge->getNodes().first << " " << edge->getNodes().second << "\n";
+            outputFile << edge->getNodes().first->getNumber() << " " << edge->getNodes().second->getNumber() << "\n";
         }
     } else {
         std::cerr << "Unable to write to file " << outputName << std::endl;
     }
     outputFile.close();
+}
+
+const std::set<Node *> &Graph::getVisitedNodes() const {
+    return visitedNodes;
+}
+
+const std::set<Edge *> &Graph::getSelectedEdges() const {
+    return selectedEdges;
+}
+
+void Graph::selectEdge(Edge *edge) {
+    edge->setSelected(true);
+    this->selectedEdges.insert(edge);
+    this->selectedWeight += edge->getWeight();
+}
+
+void Graph::visitNode(Node *node) {
+    node->setVisited(true);
+    this->visitedNodes.insert(node);
 }

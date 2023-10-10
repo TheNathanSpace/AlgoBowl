@@ -3,9 +3,69 @@
 //
 
 #include "MST.h"
+#include <algorithm>
+#include <iostream>
+
+std::tuple<Node *, Edge *> MST::getCheapestEdge() {
+    int minWeight = 51; // No edge is greater than 50
+    Edge *minEdge = nullptr;
+    Node *newNode = nullptr;
+    auto selectedEdges = getGraph()->getSelectedEdges();
+
+    /*
+     * For every Node in the current MST, check each adjacent Edge.
+     * Finally, return the cheapest of all of them.
+     */
+    for (Node *node: getGraph()->getVisitedNodes()) {
+        for (Edge *edge: node->getAdjacent()) {
+            // If the Edge isn't cheaper than the current cheapest,
+            // fail quickly and move on
+            if (edge->getWeight() >= minWeight) {
+                continue;
+            }
+
+            // Check that the Edge expands the Graph 
+            Node *otherNode = edge->getOtherNode(node);
+            if (!otherNode->isVisited()) {
+                minWeight = edge->getWeight();
+                minEdge = edge;
+                newNode = otherNode;
+            }
+        }
+    }
+    return {newNode, minEdge};
+}
 
 void MST::run() {
-    // TODO: Implement MST here, choosing selected Edges on the Graph.
+    // Setting up the random number generator
+    srand((unsigned) time(nullptr));
+    int random = rand();
+
+    /********************
+     * Prim's algorithm *
+     ********************/
+
+    // Choosing a random node -> change to node with cheapest edges
+    int firstNodeNum = random % getGraph()->getNumNodes();
+
+    // Since we're already storing a hashmap of Nodes in Graph, we use that
+    // to check if it has been visited.
+    getGraph()->visitNode(getGraph()->getNode(firstNodeNum));
+
+    // repeat until all nodes are in the formula
+    auto visitedNodes = getGraph()->getVisitedNodes();
+    while (visitedNodes.size() != getGraph()->getNumNodes()) {
+        auto [newNode, cheapestEdge] = getCheapestEdge();
+
+        // I think this means no new Edge was found
+        if (cheapestEdge == nullptr || newNode == nullptr) {
+            return;
+        }
+
+        // Selected Node and Edge are now in the new MST
+        getGraph()->selectEdge(cheapestEdge);
+        getGraph()->visitNode(newNode);
+    }
 }
 
 MST::MST(Graph *graph) : Algorithm("mst", graph) {
