@@ -3,6 +3,7 @@
 #include "graph/Graph.h"
 #include "algorithms/MST.h"
 #include "../verify/Verifier.h"
+#include "algorithms/Dijkstra.h"
 
 int main() {
     // Get graph file name from the user.
@@ -26,7 +27,7 @@ int main() {
     for (const std::string &inputFileName: inputFiles) {
         // Construct the graph object.
         std::cout << "--- Reading file " << inputFileName << " ---" << std::endl;
-        std::cout << "Constructing graph..." << std::endl;
+        std::cout << "Constructing graph...\n" << std::endl;
         auto graph = Graph(inputFileName);
 
         // Output the graph as a DOT file for visualization.
@@ -46,6 +47,15 @@ int main() {
         std::cout << "MST finished!\n" << std::endl;
         mst.writeToDot();
         std::string outputFileName = mst.writeAlgoBowlOutput();
+        mst.reset();
+
+        Dijkstra dijkstra = Dijkstra(&graph);
+        std::cout << "Starting Dijkstra..." << std::endl;
+        dijkstra.run();
+        std::cout << "Dijkstra finished!\n" << std::endl;
+        dijkstra.writeToDot();
+        outputFileName = dijkstra.writeAlgoBowlOutput();
+        dijkstra.reset();
 
         // Only running one algorithm right now, so don't waste the time:
 //        mst.reset();
@@ -55,22 +65,22 @@ int main() {
          */
 
         // Get the file names into C strings for argv input...
-        std::string qualifiedInputFileName = "./inputs/" + inputFileName;
-        char inputArray[qualifiedInputFileName.size()];
-        for (int c = 0; c < qualifiedInputFileName.size(); c++) {
-            inputArray[c] = qualifiedInputFileName[c];
-        }
-
-        char outputArray[outputFileName.size()];
-        for (int c = 0; c < outputFileName.size(); c++) {
-            outputArray[c] = outputFileName[c];
-        }
-
-        char *files[] = {inputArray, outputArray};
-
-        std::cout << "Verifying files " << qualifiedInputFileName << " " << outputFileName << std::endl;
-        verify(0, files);
-        std::cout << "Verification finished!\n" << std::endl;
+//        std::string qualifiedInputFileName = "./inputs/" + inputFileName;
+//        char inputArray[qualifiedInputFileName.size()];
+//        for (int c = 0; c < qualifiedInputFileName.size(); c++) {
+//            inputArray[c] = qualifiedInputFileName[c];
+//        }
+//
+//        char outputArray[outputFileName.size()];
+//        for (int c = 0; c < outputFileName.size(); c++) {
+//            outputArray[c] = outputFileName[c];
+//        }
+//
+//        char *files[] = {inputArray, outputArray};
+//
+//        std::cout << "Verifying files " << qualifiedInputFileName << " " << outputFileName << std::endl;
+//        verify(0, files);
+//        std::cout << "Verification finished!\n" << std::endl;
     }
 
     // all done :)

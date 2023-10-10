@@ -2,6 +2,7 @@
 // Created by nathan on 10/2/23.
 //
 
+#include <iostream>
 #include "Edge.h"
 
 Edge::Edge(int weight, Node *node1, Node *node2) {
@@ -26,7 +27,7 @@ bool Edge::isSelected() const {
 }
 
 void Edge::setSelected(bool selected) {
-    Edge::selected = selected;
+    this->selected = selected;
 }
 
 std::pair<Node *, Node *> Edge::getNodes() {

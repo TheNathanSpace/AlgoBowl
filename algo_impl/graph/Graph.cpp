@@ -55,6 +55,11 @@ Graph::Graph(const std::string &inputFileName) {
                     int weight = std::stoi(splitGetFirst(line, " "));
 
                     Edge *edge = new Edge(weight, node1Ptr, node2Ptr);
+                    try {
+                        std::string output = edge + " " + edge->getWeight() << std::endl;
+                    } catch {
+
+                    }
                     this->edges.push_back(edge);
 
                     node1Ptr->addAdjacent(edge);
@@ -205,4 +210,8 @@ void Graph::visitNode(Node *node) {
 
 const std::vector<int> &Graph::getRequiredNodes() const {
     return requiredNodes;
+}
+
+const std::unordered_map<int, Node *> &Graph::getNodeMap() const {
+    return nodeMap;
 }
