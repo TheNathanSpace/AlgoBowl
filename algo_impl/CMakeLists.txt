@@ -15,4 +15,7 @@ add_executable(AlgoBowl main.cpp
         algorithms/MST.cpp
         algorithms/MST.h
         algorithms/Algorithm.cpp
-        algorithms/Algorithm.h)
+        algorithms/Algorithm.h
+#        ../verify/Verifier.h
+#        ../verify/Verifier.cpp
+)
