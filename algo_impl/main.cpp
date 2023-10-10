@@ -71,7 +71,7 @@ int main() {
         std::cout << "Verifying files " << qualifiedInputFileName << " " << outputFileName << std::endl;
         verify(0, files);
         std::cout << "Verification finished!\n" << std::endl;
-=    }
+    }
 
     // all done :)
     std::cout << "\nFinished all algorithms/output. Exiting." << std::endl;
