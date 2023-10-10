@@ -19,6 +19,9 @@ public:
     void writeToDot();
 
     void writeAlgoBowlOutput();
+
+    /// Returns the cheapest Edge and corresponding Node (both to be added to the MST)
+    std::tuple<Node *, Edge *> getCheapestEdge();
 };
 
 

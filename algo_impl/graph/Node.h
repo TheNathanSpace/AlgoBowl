@@ -18,6 +18,7 @@ class Node {
 private:
     int number;
     bool required;
+    bool visited;
     std::vector<Edge *> adjacent;
 
 public:
@@ -27,7 +28,11 @@ public:
 
     [[nodiscard]] bool isRequired() const;
 
+    [[nodiscard]] bool isVisited() const;
+
     void setRequired(bool required);
+
+    void setVisited(bool visited);
 
     [[nodiscard]] const std::vector<Edge *> &getAdjacent() const;
 
