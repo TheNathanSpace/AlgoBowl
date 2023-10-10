@@ -6,7 +6,7 @@
 
 int main() {
     // Get graph file name from the user.
-    std::string inputListFileName = "all_inputs.txt";
+    std::string inputListFileName = "real_inputs.txt";
 //    std::cout << "Enter input list file: ";
 //    std::cin >> inputListFileName;
 
@@ -50,24 +50,28 @@ int main() {
         // Only running one algorithm right now, so don't waste the time:
 //        mst.reset();
 
-        // Perform verification. First, we gotta get the file names correct...
-//        std::string qualifiedInputFileName = "./inputs/" + inputFileName;
-//        char inputArray[qualifiedInputFileName.size()];
-//        for (int c = 0; c < qualifiedInputFileName.size(); c++) {
-//            inputArray[c] = qualifiedInputFileName[c];
-//        }
-//
-//        char outputArray[outputFileName.size()];
-//        for (int c = 0; c < outputFileName.size(); c++) {
-//            outputArray[c] = outputFileName[c];
-//        }
-//
-//        char *files[] = {inputArray, outputArray};
-//
-//        std::cout << "Verifying files " << qualifiedInputFileName << " and " << outputFileName << std::endl;
-//        verify(0, files);
-//        std::cout << "Verification finished!\n" << std::endl;
-    }
+        /*
+         *  The following was my attempt to automate the verification, but it's not working yet...
+         */
+
+        // Get the file names into C strings for argv input...
+        std::string qualifiedInputFileName = "./inputs/" + inputFileName;
+        char inputArray[qualifiedInputFileName.size()];
+        for (int c = 0; c < qualifiedInputFileName.size(); c++) {
+            inputArray[c] = qualifiedInputFileName[c];
+        }
+
+        char outputArray[outputFileName.size()];
+        for (int c = 0; c < outputFileName.size(); c++) {
+            outputArray[c] = outputFileName[c];
+        }
+
+        char *files[] = {inputArray, outputArray};
+
+        std::cout << "Verifying files " << qualifiedInputFileName << " " << outputFileName << std::endl;
+        verify(0, files);
+        std::cout << "Verification finished!\n" << std::endl;
+=    }
 
     // all done :)
     std::cout << "\nFinished all algorithms/output. Exiting." << std::endl;

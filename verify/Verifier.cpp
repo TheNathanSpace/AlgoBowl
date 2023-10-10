@@ -5,6 +5,7 @@
 #include <tuple>
 #include <list>
 #include <map>
+#include "Verifier.h"
 
 using namespace std;
 
@@ -16,21 +17,21 @@ struct vertex {
 //return true if graph contains cycle
 bool isCyclicUtil(vector<vertex*> nodes, vertex * v, bool visited[], int parent)
 {
- 
+
     // Mark the current node as visited
     visited[v->name] = true;
- 
+
     // Recur for all the vertices
     // adjacent to this vertex
     for (auto i : v->adj) {
- 
+
         // If an adjacent vertex is not visited,
         // then recur for that adjacent
         if (!visited[i->name]) {
             if (isCyclicUtil(nodes, i, visited, v->name))
                 return true;
         }
- 
+
         // If an adjacent vertex is visited and
         // is not parent of current vertex,
         // then there exists a cycle in the graph.
@@ -47,7 +48,7 @@ void addEdge(vector <pair<int, int> > adj[], int u,
 }
 
 
-int main(int argc,  char **argv)
+int verify(int argc,  char **argv)
 {
     string GraphGiven(argv[1]);
     string TreeGiven(argv[2]);
@@ -96,16 +97,16 @@ int main(int argc,  char **argv)
         in_new >> endNode;
         endNode -= 1;
         int weightGiven = -1;
-        for(auto it = adj[startNode].begin(); it!=adj[startNode].end(); it++ ){ 
-            if(it->first == endNode){ 
-                weightGiven = it->second; 
+        for(auto it = adj[startNode].begin(); it!=adj[startNode].end(); it++ ){
+            if(it->first == endNode){
+                weightGiven = it->second;
             }
         }
         if(weightGiven != -1){
             nodes[startNode]->adj.push_back(nodes[endNode]);
             nodes[endNode]->adj.push_back(nodes[startNode]);
             totalCost += weightGiven;
-            cout << startNode << " " << weightGiven << " " << totalCost << "\n";
+//            cout << startNode << " " << weightGiven << " " << totalCost << "\n";
         }
         else{
             printf("Edge given not in list \n");
