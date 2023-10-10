@@ -14,36 +14,46 @@ struct vertex {
     vertex(int s) : name(s) {}
 };
 //return true if graph contains cycle
-bool isCyclicUtil(vertex* v, bool visited[], bool* recStack)
+bool isCyclicUtil(vector<vertex*> nodes, vertex * v, bool visited[], int parent)
 {
-    if (visited[v->name] == false) {
-        // Mark the current node as visited
-        // and part of recursion stack
-        visited[v->name] = true;
-        recStack[v->name] = true;
  
-        // Recur for all the vertices adjacent to this
-        // vertex
-        for (int i = 0; i < (v->adj.size()); ++i) {
-            vertex* end = v->adj[i];
-            if (!visited[end->name] && isCyclicUtil(end, visited, recStack))
-                return true;
-            else if (recStack[end->name])
+    // Mark the current node as visited
+    visited[v->name] = true;
+ 
+    // Recur for all the vertices
+    // adjacent to this vertex
+    for (auto i : v->adj) {
+ 
+        // If an adjacent vertex is not visited,
+        // then recur for that adjacent
+        if (!visited[i->name]) {
+            if (isCyclicUtil(nodes, i, visited, v->name))
                 return true;
         }
-    }
  
-    // Remove the vertex from recursion stack
-    recStack[v->name] = false;
+        // If an adjacent vertex is visited and
+        // is not parent of current vertex,
+        // then there exists a cycle in the graph.
+        else if (i->name != parent)
+            return true;
+    }
     return false;
 }
+void addEdge(vector <pair<int, int> > adj[], int u,
+                                     int v, int wt)
+{
+    adj[u].push_back(make_pair(v, wt));
+    adj[v].push_back(make_pair(u, wt));
+}
+
 
 int main(int argc,  char **argv)
 {
     string GraphGiven(argv[1]);
     string TreeGiven(argv[2]);
     //1. read in the given file and store edges in list
-    ifstream in_s(GraphGiven);
+    ifstream in_s;
+    in_s.open (GraphGiven, ifstream::in);
     int numberNodes;
     int numEdges;
     int numReqVertices;
@@ -54,9 +64,9 @@ int main(int argc,  char **argv)
     for(int a = 0; a < numReqVertices; a++){
         int node;
         in_s >> node;
-        requiredVertices[a] = node;
+        requiredVertices[a] = node-1;
     }   
-    vector<map<int, int>>adjList;
+    vector<pair<int, int> > adj[numberNodes];
     int startNode;
     int endNode;
     int weight;
@@ -64,8 +74,7 @@ int main(int argc,  char **argv)
         in_s >> startNode;
         in_s >> endNode;
         in_s >> weight;
-        adjList[startNode][endNode] = weight;
-        adjList[endNode][startNode] = weight;
+        addEdge(adj, startNode-1, endNode-1, weight);
     }
     //2. create all nodes from given file
     vector<vertex*> nodes(numberNodes);
@@ -79,40 +88,50 @@ int main(int argc,  char **argv)
     int expectedCost;
     in_new >> expectedCost;
     int numEdgesGraph;
-    in_new >> numEdges;
-    int totalCost;
+    in_new >> numEdgesGraph;
+    int totalCost = 0;
     for(int a = 0; a < numEdgesGraph; a++){
-        in_s >> startNode;
-        in_s >> endNode;
-        if(adjList[startNode].find(endNode) != adjList[startNode].end()){
+        in_new >> startNode;
+        startNode -= 1;
+        in_new >> endNode;
+        endNode -= 1;
+        int weightGiven = -1;
+        for(auto it = adj[startNode].begin(); it!=adj[startNode].end(); it++ ){ 
+            if(it->first == endNode){ 
+                weightGiven = it->second; 
+            }
+        }
+        if(weightGiven != -1){
             nodes[startNode]->adj.push_back(nodes[endNode]);
             nodes[endNode]->adj.push_back(nodes[startNode]);
-            totalCost += adjList[startNode][endNode];
+            totalCost += weightGiven;
+            cout << startNode << " " << weightGiven << " " << totalCost << "\n";
         }
         else{
-            printf("Edge given not in list");
-            return(1);
+            printf("Edge given not in list \n");
+            return(0);
         }
     }
     if(totalCost != expectedCost){
-        printf("total cost incorrect");
-        return(1);
+        printf("total cost incorrect \n");
+        return(0);
     }
     //4. check DFS
     bool* visited = new bool[numberNodes];
-    bool* recStack = new bool[numberNodes];
     for (int i = 0; i < numberNodes; i++) {
         visited[i] = false;
-        recStack[i] = false;
     }
     vertex * start = nodes[requiredVertices[0]];
-    isCyclicUtil(start, visited, recStack);
+    if(isCyclicUtil(nodes, start, visited, -1)){
+        printf("Cycle detected\n");
+        return(0);
+     }
     for(int i = 0; i<numReqVertices; i++){
         if(!visited[requiredVertices[i]]){
-            printf("Required Vertex is not connected");
-            return(1);
+            printf("Required Vertex is not connected\n");
+            return(0);
         }
     }
-    printf("Graph is correct");
+    printf("Graph is correct\n");
     return(0);
 }
