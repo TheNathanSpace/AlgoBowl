@@ -73,14 +73,18 @@ public:
     /// Select an Edge, updating Graph data structures.
     void selectEdge(Edge *edge);
 
+    /// Unselect an Edge, updating Graph data structures.
+    void unselectEdge(Edge *edge);
+
     /// Visit a Node, updating Graph data structures.
     void visitNode(Node *node);
 
     /// Resets chosen/written edges so you can run more algorithms.
     void reset();
 
-    // Get number of nodes
+    /// Get number of nodes
     int getNumNodes() const;
+
 };
 
 

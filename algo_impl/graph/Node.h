@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <unordered_map>
 #include "Edge.h"
 
 // Forward declaration because of circular dependency
@@ -21,9 +22,12 @@ private:
     bool required = false;
     bool visited = false;
     std::vector<Edge *> adjacent;
+    std::unordered_map<int, int> dists;
 
 public:
     explicit Node(int nodeNum);
+
+    ~Node();
 
     [[nodiscard]] int getNumber() const;
 
@@ -35,9 +39,13 @@ public:
 
     void setVisited(bool visited);
 
+    void setDist(Node *target, int dist);
+
+    int getDist(Node *target);
+
     void updateSumWeight(int update);
 
-    int getSumWeight();
+    int getSumWeight() const;
 
     [[nodiscard]] const std::vector<Edge *> &getAdjacent() const;
 
