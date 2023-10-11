@@ -148,6 +148,7 @@ void Graph::reset() {
     for (it = this->nodeMap.begin(); it != this->nodeMap.end(); it++) {
         it->second->setVisited(false);
     }
+    this->visitedNodes.clear();
 }
 
 Graph::~Graph() {
@@ -213,17 +214,19 @@ const std::set<Edge *> &Graph::getSelectedEdges() const {
 }
 
 void Graph::unselectEdge(Edge *edge) {
-    edge->setSelected(false);
-    this->selectedEdges.erase(edge);
-    this->selectedWeight += edge->getWeight();
+    if (edge->isSelected()) {
+        edge->setSelected(false);
+        this->selectedEdges.erase(edge);
+        this->selectedWeight -= edge->getWeight();
+    }
 }
 
 void Graph::selectEdge(Edge *edge) {
     if (!edge->isSelected()) {
         this->selectedWeight += edge->getWeight();
+        edge->setSelected(true);
+        this->selectedEdges.insert(edge);
     }
-    edge->setSelected(true);
-    this->selectedEdges.insert(edge);
 }
 
 void Graph::visitNode(Node *node) {

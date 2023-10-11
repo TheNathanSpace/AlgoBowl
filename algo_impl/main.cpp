@@ -58,6 +58,7 @@ int main() {
         }
         mst.reset();
 
+
         Floyd_Dijkstra fl_dk = Floyd_Dijkstra(&graph);
         std::cout << "Starting FL DK..." << std::endl;
         fl_dk.run();
@@ -96,6 +97,7 @@ int main() {
 //            std::cout << std::endl;
 //        }
 //        dijkstra.reset();
+
         std::cout << std::endl;
     }
 
