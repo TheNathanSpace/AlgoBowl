@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "graph/Graph.h"
 #include "algorithms/MST.h"
-#include "../verify/Verifier.h"
 #include "algorithms/Dijkstra.h"
+#include "util/util.h"
 
 int main() {
     // Get graph file name from the user.
@@ -16,7 +17,7 @@ int main() {
     std::ifstream inputFile(inputListFileName);
     if (inputFile.is_open()) {
         while (getline(inputFile, line)) {
-            inputFiles.push_back(line);
+            inputFiles.push_back(rtrim(line));
         }
         inputFile.close();
     } else {
@@ -39,48 +40,48 @@ int main() {
          *   2. Run the Algorithm.
          *   3. (Optional) Write the Graph visualization to a DOT file. (We won't want to do this for complex/large graphs).
          *   4. Write the AlgoBowl Graph output to a TXT file.
-         *   5. Reset the Graph (so you can run the next algorithm).
+         *   5. Verify using the Verification program.
+         *   6. Reset the Graph (so you can run the next algorithm).
          */
         MST mst = MST(&graph);
         std::cout << "Starting MST..." << std::endl;
         mst.run();
-        std::cout << "MST finished!\n" << std::endl;
+        std::cout << "MST finished!" << std::endl;
         mst.writeToDot();
-        std::string outputFileName = mst.writeAlgoBowlOutput();
+        std::string mstOutputFileName = mst.writeAlgoBowlOutput();
+
+        int result = verify(inputFileName, mstOutputFileName);
+        if (result != 0) {
+            std::cout << mstOutputFileName << " incorrect!" << std::endl;
+        }
         mst.reset();
 
+
         Dijkstra dijkstra = Dijkstra(&graph);
-        std::cout << "Starting Dijkstra..." << std::endl;
+        std::cout << "\nStarting Dijkstra..." << std::endl;
         dijkstra.run();
-        std::cout << "Dijkstra finished!\n" << std::endl;
+        std::cout << "Dijkstra finished!" << std::endl;
         dijkstra.writeToDot();
-        outputFileName = dijkstra.writeAlgoBowlOutput();
+        std::string dOutputFileName = dijkstra.writeAlgoBowlOutput();
+
+        result = verify(inputFileName, dOutputFileName);
+        if (result != 0) {
+            std::cout << dOutputFileName << " incorrect!" << std::endl;
+            auto nodeSet = std::set<int>();
+            for (auto edge: graph.getSelectedEdges()) {
+                nodeSet.insert(edge->getNodes().first->getNumber());
+                nodeSet.insert(edge->getNodes().second->getNumber());
+            }
+            std::vector<int> visited(nodeSet.begin(), nodeSet.end());
+            std::sort(visited.begin(), visited.end());
+            std::cout << "Visited nodes: ";
+            for (auto node: visited) {
+                std::cout << node << " ";
+            }
+            std::cout << std::endl;
+        }
         dijkstra.reset();
-
-        // Only running one algorithm right now, so don't waste the time:
-//        mst.reset();
-
-        /*
-         *  The following was my attempt to automate the verification, but it's not working yet...
-         */
-
-        // Get the file names into C strings for argv input...
-//        std::string qualifiedInputFileName = "./inputs/" + inputFileName;
-//        char inputArray[qualifiedInputFileName.size()];
-//        for (int c = 0; c < qualifiedInputFileName.size(); c++) {
-//            inputArray[c] = qualifiedInputFileName[c];
-//        }
-//
-//        char outputArray[outputFileName.size()];
-//        for (int c = 0; c < outputFileName.size(); c++) {
-//            outputArray[c] = outputFileName[c];
-//        }
-//
-//        char *files[] = {inputArray, outputArray};
-//
-//        std::cout << "Verifying files " << qualifiedInputFileName << " " << outputFileName << std::endl;
-//        verify(0, files);
-//        std::cout << "Verification finished!\n" << std::endl;
+        std::cout << std::endl;
     }
 
     // all done :)

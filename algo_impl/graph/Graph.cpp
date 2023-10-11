@@ -55,11 +55,6 @@ Graph::Graph(const std::string &inputFileName) {
                     int weight = std::stoi(splitGetFirst(line, " "));
 
                     Edge *edge = new Edge(weight, node1Ptr, node2Ptr);
-                    try {
-                        std::string output = edge + " " + edge->getWeight() << std::endl;
-                    } catch {
-
-                    }
                     this->edges.push_back(edge);
 
                     node1Ptr->addAdjacent(edge);
@@ -75,6 +70,13 @@ Graph::Graph(const std::string &inputFileName) {
         inputFile.close();
 
         construct(inputFileName, numNodes, numEdges, sizeR);
+
+//        std::cout << "Required nodes: ";
+//        for (auto node: requiredNodes) {
+//            std::cout << node << " ";
+//        }
+//        std::cout << std::endl;
+
     } else {
         std::cerr << "Unable to open file " << inputFileName << std::endl;
         exit(-1);
@@ -179,9 +181,22 @@ std::string Graph::writeAlgoBowlOutput(const std::string &outputFileName) {
         outputFile << treeCost << "\n";
         outputFile << selectedNum << "\n";
 
+//        int tempWeight = 0;
         for (Edge *edge: this->selectedEdges) {
             outputFile << edge->getNodes().first->getNumber() << " " << edge->getNodes().second->getNumber() << "\n";
+//            tempWeight += edge->getWeight();
         }
+//        std::cout << "Newly calculated weight: " << tempWeight << std::endl;
+//        auto nodeSet = std::set<Node *>();
+//        for (auto edge: this->selectedEdges) {
+//            nodeSet.insert(edge->getNodes().first);
+//            nodeSet.insert(edge->getNodes().second);
+//        }
+//        std::cout << "Visited nodes: ";
+//        for (auto node: nodeSet) {
+//            std::cout << node->getNumber() << " ";
+//        }
+//        std::cout << std::endl;
     } else {
         std::cerr << "Unable to write to file " << outputName << std::endl;
     }
@@ -198,9 +213,11 @@ const std::set<Edge *> &Graph::getSelectedEdges() const {
 }
 
 void Graph::selectEdge(Edge *edge) {
+    if (!edge->isSelected()) {
+        this->selectedWeight += edge->getWeight();
+    }
     edge->setSelected(true);
     this->selectedEdges.insert(edge);
-    this->selectedWeight += edge->getWeight();
 }
 
 void Graph::visitNode(Node *node) {
