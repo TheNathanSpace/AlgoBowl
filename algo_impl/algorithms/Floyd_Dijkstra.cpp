@@ -105,8 +105,7 @@ void Floyd_Dijkstra::run() {
         } while (parentNode != finalParent || parentEdge != nullptr);
 
     }
-
-
+    // Clearing all the memory
     min_dists.clear();
     nodes = std::priority_queue<std::tuple<int, int>, std::vector<std::tuple<int,int>>, std::greater<>>();
     prev.clear();

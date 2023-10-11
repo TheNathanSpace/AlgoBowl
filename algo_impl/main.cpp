@@ -41,18 +41,18 @@ int main() {
          *   4. Write the AlgoBowl Graph output to a TXT file.
          *   5. Reset the Graph (so you can run the next algorithm).
          */
-//        MST mst = MST(&graph);
-//        std::cout << "Starting MST..." << std::endl;
-//        mst.run();
-//        std::cout << "MST finished!\n" << std::endl;
-//        mst.writeToDot();
-//        std::string outputFileName = mst.writeAlgoBowlOutput();
-        Floyd_Dijkstra fl_dk = Floyd_Dijkstra(&graph);
-        std::cout << "Starting FL DK..." << std::endl;
-        fl_dk.run();
-        std::cout << "FL DK finished!\n" << std::endl;
-        fl_dk.writeToDot();
-        std::string outputFileName = fl_dk.writeAlgoBowlOutput();
+        MST mst = MST(&graph);
+        std::cout << "Starting MST..." << std::endl;
+        mst.run();
+        std::cout << "MST finished!\n" << std::endl;
+        mst.writeToDot();
+        std::string outputFileName = mst.writeAlgoBowlOutput();
+//        std::cout << "Starting FL DK..." << std::endl;
+//        Floyd_Dijkstra fl_dk = Floyd_Dijkstra(&graph);
+//        fl_dk.run();
+//        std::cout << "FL DK finished!\n" << std::endl;
+//        fl_dk.writeToDot();
+//        std::string outputFileName = fl_dk.writeAlgoBowlOutput();
 
         // Only running one algorithm right now, so don't waste the time:
 //        mst.reset();
