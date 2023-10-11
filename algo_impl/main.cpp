@@ -5,6 +5,7 @@
 #include "algorithms/MST.h"
 #include "algorithms/Dijkstra.h"
 #include "util/util.h"
+#include "algorithms/Floyd_Dijkstra.h"
 
 int main() {
     // Get graph file name from the user.
@@ -43,6 +44,7 @@ int main() {
          *   5. Verify using the Verification program.
          *   6. Reset the Graph (so you can run the next algorithm).
          */
+
         MST mst = MST(&graph);
         std::cout << "Starting MST..." << std::endl;
         mst.run();
@@ -55,6 +57,19 @@ int main() {
             std::cout << mstOutputFileName << " incorrect!" << std::endl;
         }
         mst.reset();
+
+        Floyd_Dijkstra fl_dk = Floyd_Dijkstra(&graph);
+        std::cout << "Starting FL DK..." << std::endl;
+        fl_dk.run();
+        std::cout << "FL DK finished!\n" << std::endl;
+        fl_dk.writeToDot();
+        std::string fdOutputFileName = fl_dk.writeAlgoBowlOutput();
+
+        result = verify(inputFileName, fdOutputFileName);
+        if (result != 0) {
+            std::cout << fdOutputFileName << " incorrect!" << std::endl;
+        }
+        fl_dk.reset();
 
 
 //        Dijkstra dijkstra = Dijkstra(&graph);

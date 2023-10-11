@@ -212,6 +212,12 @@ const std::set<Edge *> &Graph::getSelectedEdges() const {
     return selectedEdges;
 }
 
+void Graph::unselectEdge(Edge *edge) {
+    edge->setSelected(false);
+    this->selectedEdges.erase(edge);
+    this->selectedWeight += edge->getWeight();
+}
+
 void Graph::selectEdge(Edge *edge) {
     if (!edge->isSelected()) {
         this->selectedWeight += edge->getWeight();
