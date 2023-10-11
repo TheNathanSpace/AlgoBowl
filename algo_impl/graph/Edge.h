@@ -7,6 +7,7 @@
 
 
 #include "Node.h"
+#include "string"
 
 // Forward declaration because of circular dependency
 class Node;

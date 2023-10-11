@@ -18,6 +18,8 @@ add_executable(AlgoBowl main.cpp
         algorithms/Algorithm.h
         ../verify/Verifier.h
         ../verify/Verifier.cpp
+        algorithms/Dijkstra.cpp
+        algorithms/Dijkstra.h
         algorithms/Floyd_Dijkstra.cpp
         algorithms/Floyd_Dijkstra.h
 )

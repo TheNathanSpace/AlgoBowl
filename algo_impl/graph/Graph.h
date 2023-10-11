@@ -17,19 +17,11 @@ class Graph {
 
 private:
     std::string name;
-public:
-    [[nodiscard]] const std::string &getName() const;
-
-private:
 
     int numNodes = 0;
     int numEdges = 0;
     int sizeR = 0;
     std::vector<int> requiredNodes;
-public:
-    const std::vector<int> &getRequiredNodes() const;
-
-private:
     std::unordered_map<int, Node *> nodeMap;
 
     /*
@@ -39,17 +31,22 @@ private:
     std::vector<Edge *> edges;
 
     std::set<Edge *> selectedEdges;
-public:
-    const std::set<Edge *> &getSelectedEdges() const;
 
-private:
     int selectedWeight = 0;
 
     std::set<Node *> visitedNodes;
-public:
-    const std::set<Node *> &getVisitedNodes() const;
 
 public:
+    [[nodiscard]] const std::string &getName() const;
+
+    const std::vector<int> &getRequiredNodes() const;
+
+    const std::unordered_map<int, Node *> &getNodeMap() const;
+
+    const std::set<Node *> &getVisitedNodes() const;
+
+    const std::set<Edge *> &getSelectedEdges() const;
+
     /// Construct Graph by reading in a text file.
     /// Text file specification is defined in the AlgoBowl instructions.
     explicit Graph(const std::string &inputFileName);
