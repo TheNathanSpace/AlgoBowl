@@ -57,30 +57,30 @@ int main() {
         mst.reset();
 
 
-        Dijkstra dijkstra = Dijkstra(&graph);
-        std::cout << "\nStarting Dijkstra..." << std::endl;
-        dijkstra.run();
-        std::cout << "Dijkstra finished!" << std::endl;
-        dijkstra.writeToDot();
-        std::string dOutputFileName = dijkstra.writeAlgoBowlOutput();
-
-        result = verify(inputFileName, dOutputFileName);
-        if (result != 0) {
-            std::cout << dOutputFileName << " incorrect!" << std::endl;
-            auto nodeSet = std::set<int>();
-            for (auto edge: graph.getSelectedEdges()) {
-                nodeSet.insert(edge->getNodes().first->getNumber());
-                nodeSet.insert(edge->getNodes().second->getNumber());
-            }
-            std::vector<int> visited(nodeSet.begin(), nodeSet.end());
-            std::sort(visited.begin(), visited.end());
-            std::cout << "Visited nodes: ";
-            for (auto node: visited) {
-                std::cout << node << " ";
-            }
-            std::cout << std::endl;
-        }
-        dijkstra.reset();
+//        Dijkstra dijkstra = Dijkstra(&graph);
+//        std::cout << "\nStarting Dijkstra..." << std::endl;
+//        dijkstra.run();
+//        std::cout << "Dijkstra finished!" << std::endl;
+//        dijkstra.writeToDot();
+//        std::string dOutputFileName = dijkstra.writeAlgoBowlOutput();
+//
+//        result = verify(inputFileName, dOutputFileName);
+//        if (result != 0) {
+//            std::cout << dOutputFileName << " incorrect!" << std::endl;
+//            auto nodeSet = std::set<int>();
+//            for (auto edge: graph.getSelectedEdges()) {
+//                nodeSet.insert(edge->getNodes().first->getNumber());
+//                nodeSet.insert(edge->getNodes().second->getNumber());
+//            }
+//            std::vector<int> visited(nodeSet.begin(), nodeSet.end());
+//            std::sort(visited.begin(), visited.end());
+//            std::cout << "Visited nodes: ";
+//            for (auto node: visited) {
+//                std::cout << node << " ";
+//            }
+//            std::cout << std::endl;
+//        }
+//        dijkstra.reset();
         std::cout << std::endl;
     }
 
