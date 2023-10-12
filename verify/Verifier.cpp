@@ -63,6 +63,7 @@ int verify(int argc, char **argv) {
     in_s >> numberNodes;
     in_s >> numEdges;
     in_s >> numReqVertices;
+    std::cout << "Required vertices " << numReqVertices << std::endl;
     vector<int> requiredVertices(numReqVertices);
     for (int a = 0; a < numReqVertices; a++) {
         int node;

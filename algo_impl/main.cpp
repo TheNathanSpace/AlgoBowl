@@ -9,10 +9,7 @@
 #include "algorithms/Floyd_Dijkstra.h"
 
 int main() {
-    // Get graph file name from the user.
     std::string inputListFileName = "real_inputs.txt";
-//    std::cout << "Enter input list file: ";
-//    std::cin >> inputListFileName;
 
     std::vector<std::string> inputFiles;
     std::string line;

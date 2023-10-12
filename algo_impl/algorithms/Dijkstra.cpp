@@ -9,6 +9,11 @@
 #include <queue>
 
 class DijkstraPath {
+private:
+    Node *startingNode;
+    Node *currentNode;
+    std::vector<Edge *> path;
+    int pathDistance = INT_MAX;
 public:
     DijkstraPath(Node *startingNode, Node *targetNode) : startingNode(startingNode), currentNode(targetNode) {}
 
@@ -28,12 +33,6 @@ public:
         return pathDistance;
     }
 
-private:
-    Node *startingNode;
-    Node *currentNode;
-    std::vector<Edge *> path;
-    int pathDistance = INT_MAX;
-public:
     void setPathDistance(int pathDistance) {
         DijkstraPath::pathDistance = pathDistance;
     }
@@ -290,7 +289,7 @@ void Dijkstra::run() {
             }
         }
 
-        for (auto i : alreadyChecked) {
+        for (auto i: alreadyChecked) {
             delete i.second;
         }
 
