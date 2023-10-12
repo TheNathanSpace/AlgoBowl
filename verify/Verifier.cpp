@@ -36,8 +36,10 @@ bool isCyclicUtil(vector<vertex *> nodes, vertex *v, bool visited[], int parent)
             // If an adjacent vertex is visited and
             // is not parent of current vertex,
             // then there exists a cycle in the graph.
-        else if (i->name != parent)
+        else if (i->name != parent) {
+            std::cout << "Cycle detected through " + to_string(i->name + 1) << std::endl;
             return true;
+        }
     }
     return false;
 }

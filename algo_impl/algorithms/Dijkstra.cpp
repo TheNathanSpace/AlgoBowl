@@ -44,15 +44,37 @@ public:
     }
 };
 
+bool checkCycle(Node *start, std::set<Node *> *visited, Node *parent) {
+    visited->insert(start);
+    for (auto adjEdge: start->getAdjacent()) {
+        if (!adjEdge->isSelected()) {
+            continue;
+        }
+        auto adjNode = adjEdge->getOtherNode(start);
+        if (visited->find(adjNode) == visited->end()) {
+            return checkCycle(adjNode, visited, start);
+        } else if (adjNode->getNumber() != parent->getNumber()) {
+            std::cout << "BFS Cycle detected through " << adjNode->getNumber() << std::endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 void Dijkstra::run() {
     /**************************************************
      *           Dijkstra's algorithm                 *
      *************************************************/
 
-    // Map node numbers to the distances/Dijkstra paths to every other node
+
+    /*
+     * Map node numbers to the distances/Dijkstra paths to every other node
+     */
     std::unordered_map<int, std::unordered_map<int, DijkstraPath *> *> outerPaths;
 
-    for (int startingNodeNum: getGraph()->getRequiredNodes()) {
+    // TODO: half of these will be redundant
+    for (auto it: getGraph()->getNodeMap()) {
+        int startingNodeNum = it.second->getNumber();
         Node *startingNode = getGraph()->getNode(startingNodeNum);
         std::set<Node *> unvisitedNodes;
         auto pathsToOtherNodes = new std::unordered_map<int, DijkstraPath *>;
@@ -110,10 +132,8 @@ void Dijkstra::run() {
     }
 
     /*
-     * Do MST?
-     *   1. For each required Node:
-     *     a. Find cheapest path from other Nodes to it
-     *     b. Select edges of the cheapest path
+     * For each required Node, select path between it and the closest other required Node.
+     * Note that this may result in multiple components.
      */
     for (auto targetNodeNum: getGraph()->getRequiredNodes()) {
         Node *requiredNode = getGraph()->getNode(targetNodeNum);
@@ -142,93 +162,151 @@ void Dijkstra::run() {
         }
     }
 
-    /*
-     * 1. While unencountered nodes:
-     *   a. BFS, starting at unencountered node. Record all encountered nodes in list.
-     * 2. While size of list components > 1:
-     *   a. Select edges to connect two node list components. Merge list components.
-     */
+    while (true) {
+        /*
+         * Perform BFS to discover each component.
+         * Then, find the closest two components.
+         * Select the path between their closest nodes.
+         *
+         * Repeat until there is only 1 component.
+         */
+        auto components = std::vector<std::set<Node *> *>();
 
-    auto unencounteredNodes = std::set<Node *>();
-    for (auto nodeNum: getGraph()->getRequiredNodes()) {
-        unencounteredNodes.insert(getGraph()->getNode(nodeNum));
-    }
-    auto components = std::set<std::set<Node *> *>();
+        /*
+         * Construct components with BFS
+         */
+        auto unencounteredNodes = std::set<Node *>();
+        for (auto nodeNum: getGraph()->getRequiredNodes()) {
+            unencounteredNodes.insert(getGraph()->getNode(nodeNum));
+        }
+        while (!unencounteredNodes.empty()) {
+            Node *root = *unencounteredNodes.begin();
+            unencounteredNodes.erase(unencounteredNodes.begin());
+            auto queue = std::queue<Node *>();
+            auto explored = new std::set<Node *>();
+            explored->insert(root);
+            queue.push(root);
+            auto parentMap = std::unordered_map<Node *, Node *>();
 
-    while (!unencounteredNodes.empty()) {
-        Node *root = *unencounteredNodes.erase(unencounteredNodes.begin());
-        auto queue = std::queue<Node *>();
-        auto explored = new std::set<Node *>();
-        explored->insert(root);
-        queue.push(root);
-        auto parentMap = std::unordered_map<Node *, Node *>();
+            // BFS loop
+            while (!queue.empty()) {
+                Node *node = queue.front();
+                queue.pop();
 
-        // Do BFS of component
-        while (!queue.empty()) {
-            Node *node = queue.front();
-            queue.pop();
+                for (auto edge: node->getAdjacent()) {
+                    // BFS only through selected edges
+                    if (!edge->isSelected()) {
+                        continue;
+                    }
+                    auto otherNode = edge->getOtherNode(node);
+                    if (explored->find(otherNode) == explored->end()) {
+                        explored->insert(otherNode);
+                        parentMap[otherNode] = node;
+                        queue.push(otherNode);
+                    }
+                }
+            }
 
-            for (auto edge: node->getAdjacent()) {
-                if (!edge->isSelected()) {
+            // Record encountered nodes in component.
+            for (auto encounteredNode: *explored) {
+                unencounteredNodes.erase(encounteredNode);
+            }
+            if (!explored->empty()) {
+                components.push_back(explored);
+            }
+
+//            // Check for cycle (for debugging purposes)
+//            std::set<Node *> visited;
+//            bool cycle = checkCycle(*explored->begin(), &visited, nullptr);
+        }
+
+        // If there's only one component, then they're all merged and we're done!
+        if (components.size() == 1) {
+            break;
+        }
+
+        /*
+         * For each component, for each other component,
+         * compare the distance between each node in each
+         * component to find the cheapest path to connect
+         * the components.
+         */
+
+        // Initialize alreadyChecked map
+        // This map is used to cut the time taken in half because
+        // half the combinations will be redundant (order doesn't matter).
+        auto alreadyChecked = std::unordered_map<int, std::set<int> *>();
+        for (int i = 0; i < components.size(); ++i) {
+            alreadyChecked[i] = new std::set<int>;
+        }
+
+        /*
+         * Find the single cheapest path between two components
+         */
+        int cheapestCompPathWeight = INT_MAX;
+        DijkstraPath *cheapestCompObj = nullptr;
+        for (int i = 0; i < components.size(); ++i) {
+            for (int j = 0; j < components.size(); ++j) {
+                // SKip if comparing the same component
+                if (i == j) {
                     continue;
                 }
-                auto otherNode = edge->getOtherNode(node);
-                if (explored->find(otherNode) == explored->end()) {
-                    explored->insert(otherNode);
-                    parentMap[otherNode] = node;
-                    queue.push(otherNode);
+
+                // If this combination hasn't been checked yet
+                if (alreadyChecked[i]->find(j) == alreadyChecked[i]->end() &&
+                    alreadyChecked[j]->find(i) == alreadyChecked[j]->end()) {
+                    /*
+                     * Find the single cheapest path between these two component's nodes
+                     */
+                    int cheapestNodePathWeight = INT_MAX;
+                    DijkstraPath *cheapestNodeObj = nullptr;
+
+                    // TODO: half of these will be redundant
+                    for (Node *outerNode: *components[i]) {
+                        for (Node *innerNode: *components[j]) {
+                            // Skip if comparing the same node
+                            if (outerNode->getNumber() == innerNode->getNumber()) {
+                                continue;
+                            }
+
+                            std::unordered_map<int, DijkstraPath *> *startNodePaths = outerPaths[outerNode->getNumber()];
+                            auto targetNodePath = (*startNodePaths)[innerNode->getNumber()];
+
+                            if (targetNodePath->getPathDistance() < cheapestNodePathWeight) {
+                                cheapestNodePathWeight = targetNodePath->getPathDistance();
+                                cheapestNodeObj = targetNodePath;
+                            }
+                        }
+                    }
+
+                    if (cheapestNodePathWeight < cheapestCompPathWeight) {
+                        cheapestCompPathWeight = cheapestNodePathWeight;
+                        cheapestCompObj = cheapestNodeObj;
+                    }
+
+                    // Update alreadyChecked to avoid duplicating this combination
+                    alreadyChecked[i]->insert(j);
                 }
             }
         }
 
-        auto toErase = std::set<Node *>();
-        // Record encountered nodes
-        for (auto encounteredNode: *explored) {
-            unencounteredNodes.erase(encounteredNode);
-            if (!encounteredNode->isRequired()) {
-                toErase.insert(encounteredNode);
-            }
+        for (auto i : alreadyChecked) {
+            delete i.second;
         }
-        for (auto erase: toErase) {
-            explored->erase(erase);
-        }
-        if (!explored->empty()) {
-            components.insert(explored);
-        }
-    }
-
-    while (components.size() > 1) {
-        std::cout << "Components count: " << components.size() << std::endl;
-
-        auto comp1 = *components.erase(components.begin());
-        auto comp2 = *components.erase(components.begin());
-
-        // Choose two random required to connect
-        // TODO: this is not the optimal solution. You should check every possible connection.
-        Node *node1 = *comp1->begin();
-        Node *node2 = *comp2->begin();
 
         // Select edges to connect the two components
-        std::unordered_map<int, DijkstraPath *> *startNodePaths = outerPaths[node1->getNumber()];
-        auto targetNodePath = (*startNodePaths)[node2->getNumber()];
-        for (auto edge: targetNodePath->getPath()) {
+        for (auto edge: cheapestCompObj->getPath()) {
             getGraph()->selectEdge(edge);
-            std::cout << "Selected edge " << edge->getNodes().first->getNumber() << " "
-                      << edge->getNodes().second->getNumber() << std::endl;
         }
 
-        // Merge the two components
-        for (auto node: *comp2) {
-            comp1->insert(node);
+        // Delete all existing components (we'll recalculate them to avoid cycles)
+        for (auto component: components) {
+            delete component;
         }
-        components.insert(comp1);
-        delete comp2;
+        components.clear();
     }
 
-    for (auto component: components) {
-        delete component;
-    }
-
+    // Cleanup map memory
     for (auto path: outerPaths) {
         delete path.second;
     }

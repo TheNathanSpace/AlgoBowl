@@ -33,6 +33,10 @@ private:
     std::set<Edge *> selectedEdges;
 
     int selectedWeight = 0;
+public:
+    int getSelectedWeight() const;
+
+private:
 
     std::set<Node *> visitedNodes;
 

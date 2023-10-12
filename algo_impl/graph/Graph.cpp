@@ -241,3 +241,7 @@ const std::vector<int> &Graph::getRequiredNodes() const {
 const std::unordered_map<int, Node *> &Graph::getNodeMap() const {
     return nodeMap;
 }
+
+int Graph::getSelectedWeight() const {
+    return selectedWeight;
+}

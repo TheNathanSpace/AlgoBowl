@@ -1,3 +1,1 @@
-AlgoBowlInput.txt
-test.txt
-TestInput1.txt
+input_group692.txt
