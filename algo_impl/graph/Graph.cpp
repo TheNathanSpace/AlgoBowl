@@ -33,7 +33,6 @@ Graph::Graph(const std::string &inputFileName) {
                     for (int i = 0; i < numNodes; ++i) {
                         Node *node = new Node(i + 1);
                         nodeMap.insert(std::pair(i + 1, node));
-                        allNodes.push_back(node);
                     }
 
                     numEdges = std::stoi(splitGetFirst(line, " "));
@@ -149,6 +148,7 @@ void Graph::reset() {
     for (it = this->nodeMap.begin(); it != this->nodeMap.end(); it++) {
         it->second->setVisited(false);
     }
+    this->visitedNodes.clear();
 }
 
 Graph::~Graph() {
@@ -213,24 +213,20 @@ const std::set<Edge *> &Graph::getSelectedEdges() const {
     return selectedEdges;
 }
 
-std::vector<Node *> Graph::getAllNodes() {
-    return this->allNodes;
+void Graph::unselectEdge(Edge *edge) {
+    if (edge->isSelected()) {
+        edge->setSelected(false);
+        this->selectedEdges.erase(edge);
+        this->selectedWeight -= edge->getWeight();
+    }
 }
 
 void Graph::selectEdge(Edge *edge) {
     if (!edge->isSelected()) {
         this->selectedWeight += edge->getWeight();
+        edge->setSelected(true);
+        this->selectedEdges.insert(edge);
     }
-    edge->setSelected(true);
-    this->selectedEdges.insert(edge);
-}
-
-void Graph::unselectEdge(Edge *edge) {
-    if (edge->isSelected()) {
-        this->selectedWeight -= edge->getWeight();
-    }
-    edge->setSelected(false);
-    this->selectedEdges.erase(edge);
 }
 
 void Graph::visitNode(Node *node) {
