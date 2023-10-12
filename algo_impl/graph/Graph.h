@@ -23,6 +23,7 @@ private:
     int sizeR = 0;
     std::vector<int> requiredNodes;
     std::unordered_map<int, Node *> nodeMap;
+    std::vector<Node *> allNodes;
 
     /*
      * This could be changed to a map (node1, node2) -> edge, but I'm not
@@ -82,6 +83,9 @@ public:
 
     /// Resets chosen/written edges so you can run more algorithms.
     void reset();
+
+    /// Get all the available nodes
+    std::vector<Node *> getAllNodes();
 
     /// Get number of nodes
     int getNumNodes() const;

@@ -8,6 +8,8 @@
 
 #include "Algorithm.h"
 
+#define MAX_EDGE (10000 * 50 + 1)
+
 class Dijkstra : public Algorithm {
 public:
     explicit Dijkstra(Graph *graph);
@@ -17,9 +19,6 @@ public:
     void writeToDot();
 
     std::string writeAlgoBowlOutput();
-
-    /// Returns the cheapest Edge and corresponding Node (both to be added to the MST)
-    std::tuple<Node *, Edge *> getCheapestEdge();
 
 };
 

@@ -54,7 +54,7 @@ int Node::getDist(Node *target) {
                 break;
             }
         }
-        if (!updated) { this->setDist(target, 10000 * 50 + 1); }
+        if (!updated) { this->setDist(target, MAX_EDGE); }
     }
     return this->dists.at(target->getNumber());
 }

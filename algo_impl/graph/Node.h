@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include "Edge.h"
+#define MAX_EDGE (10000 * 50 + 1)
 
 // Forward declaration because of circular dependency
 class Edge;
