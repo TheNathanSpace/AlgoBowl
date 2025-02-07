@@ -22,15 +22,3 @@ like this:
 
 You'll be prompted for a graph input file, which should be placed in the `AlgoBowl/inputs` directory. Output files will
 be in the `AlgoBowl/outputs` directory.
-
-## TODO:
-
-### Algorithm Implementation
-
-Right now, `algo_impl` can read in a graph file, construct the `Graph` object, output it to a `.DOT` file for
-visualization, and output it to the AlgoBowl output format. It's ready for the actual algorithms:
-
-- Normal MST
-- MST, but deleting unnecessary leaves
-- ???
-- Win
