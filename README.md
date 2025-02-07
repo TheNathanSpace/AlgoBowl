@@ -7,6 +7,16 @@ Group members:
 - Kai Hoshijo (Algorithm Implementation)
 - Nathan Panzer (Algorithm Implementation)
 
+## Features
+
+- Will try all algorithms and select the optimal solution from them.
+- Algorithms:
+   - Prim's algorithm
+   - Global Dijkstra's algorithm
+   - Floyd–Warshall algorithm
+- Export graphs to DOT format for easy visualization.
+- Verify/test output's validity.
+
 ## Usage
 
 ### Algorithm Implementation
